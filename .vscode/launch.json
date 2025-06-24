@@ -1,0 +1,19 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run Docker Dev",
+      "type": "node",
+      "request": "launch",
+      "preLaunchTask": "docker-compose up dev",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Run Docker Prod",
+      "type": "node",
+      "request": "launch",
+      "preLaunchTask": "docker-compose up prod",
+      "console": "integratedTerminal"
+    }
+  ]
+}
