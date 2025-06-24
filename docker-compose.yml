@@ -5,10 +5,10 @@ services:
     container_name: nextjs-app
     build:
       context: .
+      args:
+        NEXT_PUBLIC_API_BASE: https://api.secilstore.com
     ports:
       - "3000:3000"
-    env_file:
-      - .env.production
     environment:
       - NODE_ENV=production
-    command: npm start
+      - NEXT_PUBLIC_API_BASE=https://api.secilstore.com

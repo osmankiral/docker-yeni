@@ -1,22 +1,24 @@
-# Build aşaması
-FROM node:18 AS builder
+FROM node:18-alpine AS builder
 WORKDIR /app
 
+ARG NEXT_PUBLIC_API_BASE
+ENV NEXT_PUBLIC_API_BASE=$NEXT_PUBLIC_API_BASE
+ENV NODE_ENV=production
+
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 
 COPY . .
 RUN npm run build
 
-# Run aşaması
-FROM node:18 AS runner
+FROM node:18-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
+ENV NEXT_PUBLIC_API_BASE=$NEXT_PUBLIC_API_BASE
 
-COPY --from=builder /app/package*.json ./
-COPY --from=builder /app/.next .next
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/node_modules ./node_modules
 
 EXPOSE 3000
-CMD ["npm", "start"]
+CMD ["node", "server.js"]
